@@ -1,0 +1,18 @@
+#!/bin/bash
+
+case $SCHEDULE in
+  hourly)
+    mv /etc/backup /etc/periodic/hourly/
+    ;;
+  daily)
+    mv /etc/backup /etc/periodic/daily/
+    ;;
+  weekly)
+    mv /etc/backup /etc/periodic/weekly/
+    ;;
+  *) 
+    echo "$SCHEDULE /etc/backup" >> /etc/crontabs/root
+    ;;
+esac
+
+exec /usr/sbin/crond -f -L /var/log/crond.log

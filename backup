@@ -1,0 +1,34 @@
+#!/bin/bash
+
+if [[ -n "$DB_DUMP_DEBUG" ]]; then
+  set -x
+fi
+
+# set our defaults
+BAK_SCHEDULE=${SCHEDULE:-daily}
+BAK_DB_USER=${DB_USER:-cattle}
+BAK_DB_PASS=${DB_PASS:-cattle}
+BAK_DB_HOST=${DB_HOST:-db}
+BAK_DATABASES=${DB_TARGET:--A}
+BAK_OPTIONS=${OPTIONS}
+# database server
+DUMP_TARGET=/backups
+
+now=$(date +"%Y%M%d%H%M%S")
+TARGET=db_backup_${now}.gz
+    
+CMD="mysqldump -h $BAK_DB_HOST -u$BAK_DB_USER -p$BAK_DB_PASS $BAK_DATABASES $BAK_OPTIONS | gzip > $DUMP_TARGET/$TARGET"
+
+echo "$now: start database backup by folllowing command:"
+echo "    $CMD"
+bin/sh -c $CMD
+
+RET = $?
+now=$(date +"%Y%M%d%H%M%S")
+if [ RET -ne 0 ]; then
+  echo "$now: backup error: exit code $RET"
+  exit $RET
+else
+  echo "$now: backup successful."
+  exit 0
+fi
