@@ -4,7 +4,9 @@ A docker image to dump mysql database on a periodic.
 
 ## Usage
 
-There are two methods to run this container.
+There are two methods to run this container. 
+
+**Examples:**
 
 * **Dump a remote  database:**
  
@@ -14,8 +16,9 @@ There are two methods to run this container.
     -e DB_USER="myuser" \
     -e DB_PASS="mypassword" \
     -e DATABASE="dbname" \
-    -e OPTIONS="mysqldump_options" \
+    -e OPTIONS="<mysqldump_options>" \
     -e SCHEDULE="dump_schdule" \
+    -e RESERVES="dump_file_reserve_number" \
     -v /your/backup-folder:/backups betacz/mysql-dump:latest
 ```
 * **Dump a database that's running on a container:**
@@ -28,8 +31,9 @@ There are two methods to run this container.
     -e DATABASE="dbname" \
     -e OPTIONS="mysqldump_options" \
     -e SCHEDULE="dump_schdule" \
+    -e RESERVES="dump_file_reserve_number" \
     -v /your/backup-folder:/backups betacz/mysql-dump:latest
-```
+``` 
 
 ## Environments
 
@@ -41,6 +45,7 @@ Some envrionment variable has default value, so you needn't set all of them in m
 * `DATABASE`: Database's name, default is `"--all-databases"` that means all database. you can use `"db_mame"` to dump only one database or `"--database db1 db2..."` to dump multiple databases.
 * `OPTIONS`: Any mysqldump's options you want to use, no default.
 * `SCHEDULE`: Explained as shown below. default is `"daily"`.
+* `RESERVES`: Dump file reserve numbers. default is `7`.
 
 ### Schedule syntax:
 
