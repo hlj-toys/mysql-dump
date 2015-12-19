@@ -42,7 +42,7 @@ Some envrionment variable has default value, so you needn't set all of them in m
 * `DB_HOST`: Database's hostname or address. If you want to backup a database in container at same host, use `"--link your-db:db"` instead of.
 * `DB_USER`: Database's username, default is `"cattle"`.
 * `DB_PASS`: Database's password, default is `"cattle"`.
-* `DATABASE`: Database's name, default is `"--all-databases"` that means all database. you can use `"db_mame"` to dump only one database or `"--database db1 db2..."` to dump multiple databases.
+* `DATABASE`: Database's name, default is `"--all-databases"` that means all database. you can use `"db_mame"` to dump only one database or `"--databases db1 db2..."` to dump multiple databases.
 * `OPTIONS`: Any mysqldump's options you want to use, no default.
 * `SCHEDULE`: Explained as shown below. default is `"daily"`.
 * `RESERVES`: Dump file reserve numbers. default is `7`.
