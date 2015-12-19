@@ -3,16 +3,16 @@ DUMP_SCHEDULE=${SCHEDULE:-daily}
 
 case $DUMP_SCHEDULE in
   hourly)
-    mv /etc/backup /etc/periodic/hourly/
+    cp /usr/local/bin/dump /etc/periodic/hourly/
     ;;
   daily)
-    mv /etc/backup /etc/periodic/daily/
+    cp /usr/local/bin/dump /etc/periodic/daily/
     ;;
   weekly)
-    mv /etc/backup /etc/periodic/weekly/
+    cp /usr/local/bin/dump /etc/periodic/weekly/
     ;;
   *) 
-    echo "$DUMP_SCHEDULE /etc/backup" >> /etc/crontabs/root
+    echo "$DUMP_SCHEDULE /usr/local/bin/dump" >> /etc/crontabs/root
     ;;
 esac
 

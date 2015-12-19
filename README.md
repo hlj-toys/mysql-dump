@@ -6,12 +6,13 @@ A docker image to dump mysql database on a periodic.
 
 There are two methods to run this container. 
 
-**Examples:**
+**Examples**
 
 * **Dump a remote  database:**
  
 ```shell
   $ docker run -d \
+    -e DUMP_DEBUG="true" \
     -e DB_HOST="x.x.x.x" \
     -e DB_USER="myuser" \
     -e DB_PASS="mypassword" \
@@ -26,6 +27,7 @@ There are two methods to run this container.
 ```shell
   $ docker run -d \
     --link your-mysql-db:db
+    -e DUMP_DEBUG="true" \
     -e DB_USER="myuser" \
     -e DB_PASS="mypassword" \
     -e DATABASE="dbname" \
@@ -34,6 +36,14 @@ There are two methods to run this container.
     -e RESERVES="dump_file_reserve_number" \
     -v /your/backup-folder:/backups betacz/mysql-dump:latest
 ``` 
+
+**Additional,** you can do dump immediately like this:
+
+```shell
+  $ docker run [options] betacz/mysql-dump:latest dump
+```
+
+The `[options]` is as same as above. 
 
 ## Environments
 
@@ -46,6 +56,7 @@ Some envrionment variable has default value, so you needn't set all of them in m
 * `OPTIONS`: Any mysqldump's options you want to use, no default.
 * `SCHEDULE`: Explained as shown below. default is `"daily"`.
 * `RESERVES`: Dump file reserve numbers. default is `7`.
+* `DUMP_DEBUG`: If set `"true"` then show debug info. default is `"false"`.
 
 ### Schedule syntax:
 

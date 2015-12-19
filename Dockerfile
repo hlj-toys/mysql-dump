@@ -8,9 +8,9 @@ RUN apk add --update mysql-client  && rm -rf /var/cache/apk/*
 VOLUME /backups
 # install the entrypoint
 COPY ./run /usr/local/bin/run
-COPY ./backup /etc/backup
+COPY ./dump /usr/local/bin/dump
 
 
 # start
-ENTRYPOINT ["/usr/local/bin/run"]
+CMD ["/usr/local/bin/run"]
 

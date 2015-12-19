@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# set our defaults
+DUMP_DEBUG_FLAG=${DUMP_DEBUG:-false}
+BAK_SCHEDULE=${SCHEDULE:-daily}
+BAK_DB_USER=${DB_USER:-cattle}
+BAK_DB_PASS=${DB_PASS:-cattle}
+BAK_DB_HOST=${DB_HOST:-db}
+BAK_DATABASES=${DATABASE:--A}
+RESERVE_NUM=${RESERVES:-7}
+# database server
+DUMP_TARGET=/backups
+
+# debug info
+if [ $DUMP_DEBUG_FLAG = 'true' ]; then
+  BAK_OPTIONS="--debug-info --verbose $OPTIONS"
+  CMD="set -x;"
+else
+  BAK_OPTIONS=${OPTIONS}
+  CMD=""
+fi
+
+# command
+now=$(date +"%Y%m%d%H%M%S")
+TARGET=db_backup_${now}.gz
+CMD="$CMD set -o pipefail; mysqldump -h $BAK_DB_HOST -u$BAK_DB_USER -p$BAK_DB_PASS $BAK_DATABASES $BAK_OPTIONS | gzip > $DUMP_TARGET/$TARGET"
+
+# exec command
+start=$(date +"%Y-%m-%d %H:%M:%S")
+echo "$start: start database dump..."
+/bin/sh -c "$CMD"
+
+RET=$?
+end=$(date +"%Y-%m-%d %H:%M:%S")
+
+# check result and cleanup old file
+if [ $RET -ne 0 ]; then
+  echo "$end: backup error: exit code $RET"
+  rm $DUMP_TARGET/$TARGET
+  exit $RET
+else
+  echo "$end: backup successful."
+  cd /backups && ls -lrt *.gz | head -n -$RESERVE_NUM | awk '{print $9}' | xargs rm -f
+  exit 0
+fi
