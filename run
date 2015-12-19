@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/sh
+DUMP_SCHEDULE=${SCHEDULE:-daily}
 
-case $SCHEDULE in
+case $DUMP_SCHEDULE in
   hourly)
     mv /etc/backup /etc/periodic/hourly/
     ;;
@@ -11,7 +12,7 @@ case $SCHEDULE in
     mv /etc/backup /etc/periodic/weekly/
     ;;
   *) 
-    echo "$SCHEDULE /etc/backup" >> /etc/crontabs/root
+    echo "$DUMP_SCHEDULE /etc/backup" >> /etc/crontabs/root
     ;;
 esac
 
