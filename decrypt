@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# database server
+DUMP_TARGET=/backups
+
+if [ $# -lt 1 ]; then
+  echo 'Usage: decrypt source-file [dest-folder]'
+  exit 1
+fi
+
+TARGET="${2:-$DUMP_TARGET}/$(basename $1 .aes)"
+
+# check key
+if [ $ENCRYPT_KEY ]; then
+  CMD="openssl aes-256-cbc -d -k $ENCRYPT_KEY -in $DUMP_TARGET/$1 -out $TARGET"
+else
+  echo "You must set 'ENCRYPT_KEY' as your decrypt key!"
+  exit 1
+fi
+# exec command
+start=$(date +"%Y-%m-%d %H:%M:%S")
+echo "$start: start decrypt..."
+/bin/sh -c "$CMD"
+
+RET=$?
+end=$(date +"%Y-%m-%d %H:%M:%S")
+
+# check result and cleanup old file
+if [ $RET -ne 0 ]; then
+  echo "$end: decrypt error: exit code $RET"
+  rm -f $TARGET
+  exit $RET
+else
+  echo "$end: decrypt successful."
+fi

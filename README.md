@@ -37,6 +37,8 @@ There are two methods to run this container.
     -v /your/backup-folder:/backups betacz/mysql-dump:latest
 ``` 
 
+The dumped file will be named as `"db_backup_<timestamp>.gz"`.
+
 **Additional,** you can do dump immediately like this:
 
 ```shell
@@ -44,6 +46,7 @@ There are two methods to run this container.
 ```
 
 The `[options]` is as same as above. 
+
 
 ## Environments
 
@@ -65,6 +68,18 @@ Some envrionment variable has default value, so you needn't set all of them in m
 * `"weekly"`: 03:00 on Sunday every week.
 * `"monthly"`: 05:00 on 1st every month.
 * `"0 5 * * 6"`: crontab syntax.
+
+## Encrypt
+
+If you dump a database that's include secret data, maybe you want to encrypt it.
+
+There is a envrionment variable `"ENCRYPT_KEY"` can do this as shown below:
+
+```shell
+   $ docker run -e ENCRYPT_KEY=your-key [other-options] betacz/mysql-dump:latest
+```
+
+The dumped file will be encrypted with `AES-256-CBC` and named with a `'.aes'` extension.
 
 ## License
 Released under the MIT License. 

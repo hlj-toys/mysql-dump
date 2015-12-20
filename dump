@@ -22,8 +22,18 @@ fi
 
 # command
 now=$(date +"%Y%m%d%H%M%S")
-TARGET=db_backup_${now}.gz
-CMD="$CMD set -o pipefail; mysqldump -h $BAK_DB_HOST -u$BAK_DB_USER -p$BAK_DB_PASS $BAK_DATABASES $BAK_OPTIONS | gzip > $DUMP_TARGET/$TARGET"
+TARGET=db_backup_${now}
+
+# encrypt
+if [ $ENCRYPT_KEY ]; then
+  TARGET="${TARGET}.gz.aes"
+  OUT_CMD="gzip | openssl aes-256-cbc -k $ENCRYPT_KEY > $DUMP_TARGET/${TARGET}"
+else
+  TARGET="${TARGET}.gz"
+  OUT_CMD="gzip > $DUMP_TARGET/${TARGET}"
+fi
+
+CMD="$CMD set -o pipefail; mysqldump -h $BAK_DB_HOST -u$BAK_DB_USER -p$BAK_DB_PASS $BAK_DATABASES $BAK_OPTIONS | $OUT_CMD"
 
 # exec command
 start=$(date +"%Y-%m-%d %H:%M:%S")
@@ -40,6 +50,6 @@ if [ $RET -ne 0 ]; then
   exit $RET
 else
   echo "$end: backup successful."
-  cd /backups && ls -lrt *.gz | head -n -$RESERVE_NUM | awk '{print $9}' | xargs rm -f
+  cd /backups && ls -lrt | head -n -$RESERVE_NUM | awk '{print $9}' | xargs rm -f
   exit 0
 fi
