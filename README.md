@@ -81,6 +81,18 @@ There is a envrionment variable `"ENCRYPT_KEY"` can do this as shown below:
 
 The dumped file will be encrypted with `AES-256-CBC` and named with a `'.aes'` extension.
 
+Decrypt file is also very simple, see example below:
+
+```shell
+   $ docker run -e ENCRYPT_KEY=your-key \
+     -v /your/backup-folder:/backups \
+     -v /your/output:/output
+     betacz/mysql-dump:latest \
+     decrypt db_backup_<timestamp>.gz.aes /output  
+```
+
+The `"decrypt"` accepts one or two arguments: `decrypt <source file> [dest-folder]`. If you don't assign `dest-folder`, the decrypted file will be saved in same folder with source file.
+
 ## License
 Released under the MIT License. 
 
