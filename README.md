@@ -13,10 +13,10 @@ There are two methods to run this container.
 ```shell
   $ docker run -d \
     -e DUMP_DEBUG="true" \
-    -e DB_HOST="x.x.x.x" \
-    -e DB_USER="myuser" \
-    -e DB_PASS="mypassword" \
-    -e DATABASE="dbname" \
+    -e MYSQL_HOST="x.x.x.x" \
+    -e MYSQL_USER="myuser" \
+    -e MYSQL_PASSWORD="mypassword" \
+    -e MYSQL_DATABASE="dbname" \
     -e OPTIONS="<mysqldump_options>" \
     -e SCHEDULE="dump_schdule" \
     -e RESERVES="dump_file_reserve_number" \
@@ -28,9 +28,9 @@ There are two methods to run this container.
   $ docker run -d \
     --link your-mysql-db:db
     -e DUMP_DEBUG="true" \
-    -e DB_USER="myuser" \
-    -e DB_PASS="mypassword" \
-    -e DATABASE="dbname" \
+    -e MYSQL_USER="myuser" \
+    -e MYSQL_PASSWORD="mypassword" \
+    -e MYSQL_DATABASE="dbname" \
     -e OPTIONS="mysqldump_options" \
     -e SCHEDULE="dump_schdule" \
     -e RESERVES="dump_file_reserve_number" \
@@ -50,12 +50,12 @@ The `[options]` is as same as above.
 
 ## Environments
 
-Some envrionment variable has default value, so you needn't set all of them in most cases.
+Some environment variable has default value, so you needn't set all of them in most cases.
 
-* `DB_HOST`: Database's hostname or address. If you want to backup a database in container at same host, use `"--link your-db:db"` instead of.
-* `DB_USER`: Database's username, default is `"cattle"`.
-* `DB_PASS`: Database's password, default is `"cattle"`.
-* `DATABASE`: Database's name, default is `"--all-databases"` that means all database. you can use `"db_mame"` to dump only one database or `"--databases db1 db2..."` to dump multiple databases.
+* `MYSQL_HOST`: Database's hostname or address. If you want to backup a database in container at same host, use `"--link your-db:db"` instead of.
+* `MYSQL_USER`: Database's username, default is `"cattle"`.
+* `MYSQL_PASSWORD`: Database's password, default is `"cattle"`.
+* `MYSQL_DATABASE`: Database's name, default is `"--all-databases"` that means all database. you can use `"db_mame"` to dump only one database or `"--databases db1 db2..."` to dump multiple databases.
 * `OPTIONS`: Any mysqldump's options you want to use, no default.
 * `SCHEDULE`: Explained as shown below. default is `"daily"`.
 * `RESERVES`: Dump file reserve numbers. default is `7`.
