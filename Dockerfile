@@ -1,5 +1,5 @@
 # mysql  backuper image
-FROM alpine:3.5
+FROM alpine
 MAINTAINER BetaCZ <hlj8080@gmail.com>
 
 # install the mysql client
