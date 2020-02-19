@@ -14,6 +14,7 @@ There are two methods to run this container.
   $ docker run -d \
     -e DUMP_DEBUG="true" \
     -e MYSQL_HOST="x.x.x.x" \
+    -e MYSQL_PORT="xxx"  \
     -e MYSQL_USER="myuser" \
     -e MYSQL_PASSWORD="mypassword" \
     -e MYSQL_DATABASE="dbname" \
@@ -29,6 +30,7 @@ There are two methods to run this container.
     --link your-mysql-db:db
     -e DUMP_DEBUG="true" \
     -e MYSQL_USER="myuser" \
+    -e MYSQL_PORT="xxx"  \
     -e MYSQL_PASSWORD="mypassword" \
     -e MYSQL_DATABASE="dbname" \
     -e OPTIONS="mysqldump_options" \
@@ -53,8 +55,10 @@ The `[options]` is as same as above.
 Some environment variable has default value, so you needn't set all of them in most cases.
 
 * `MYSQL_HOST`: Database's hostname or address. If you want to backup a database in container at same host, use `"--link your-db:db"` instead of.
-* `MYSQL_USER`: Database's username, default is `"cattle"`.
-* `MYSQL_PASSWORD`: Database's password, default is `"cattle"`.
+* `MYSQL_PORT`: default is 3306.
+* `MYSQL_USER`: Database's username, default is `"root"`.
+* `MYSQL_PASSWORD`: Database's password. If ignore, then use `MYSQL_PASSWORD_FILE`.
+* `MYSQL_PASSWORD_FILE`: Docker swarm secret name. 
 * `MYSQL_DATABASE`: Database's name, default is `"--all-databases"` that means all database. you can use `"db_mame"` to dump only one database or `"--databases db1 db2..."` to dump multiple databases.
 * `OPTIONS`: Any mysqldump's options you want to use, no default.
 * `SCHEDULE`: Explained as shown below. default is `"daily"`.
