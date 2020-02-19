@@ -3,9 +3,10 @@
 # set our defaults
 DUMP_DEBUG_FLAG=${DUMP_DEBUG:-false}
 BAK_SCHEDULE=${SCHEDULE:-daily}
-BAK_DB_USER=${MYSQL_USER:-cattle}
-BAK_DB_PASS=${MYSQL_PASSWORD:-cattle}
+BAK_DB_USER=${MYSQL_USER:-root}
+BAK_DB_PASS=${MYSQL_PASSWORD:-$(cat ${MYSQL_PASSWORD_FILE:-/dev/null})}
 BAK_DB_HOST=${MYSQL_HOST:-db}
+BAK_DB_PORT=${MYSQL_PORT:-3306}
 BAK_DATABASES=${MYSQL_DATABASE:--A}
 RESERVE_NUM=${RESERVES:-7}
 # database server
@@ -33,7 +34,7 @@ else
   OUT_CMD="gzip > $DUMP_TARGET/${TARGET}"
 fi
 
-CMD="$CMD set -o pipefail; mysqldump -h $BAK_DB_HOST -u$BAK_DB_USER -p$BAK_DB_PASS $BAK_DATABASES $BAK_OPTIONS | $OUT_CMD"
+CMD="$CMD set -o pipefail; mysqldump -h $BAK_DB_HOST -P $BAK_DB_PORT -u$BAK_DB_USER -p$BAK_DB_PASS $BAK_DATABASES $BAK_OPTIONS | $OUT_CMD"
 
 # exec command
 start=$(date +"%Y-%m-%d %H:%M:%S")
