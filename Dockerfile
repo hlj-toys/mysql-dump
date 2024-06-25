@@ -1,9 +1,9 @@
 # mysql  backuper image
 FROM alpine
-MAINTAINER BetaCZ <hlj8080@gmail.com>
+LABEL Author="BetaCZ <hlj8080@gmail.com>"
 
 # install the mysql client
-RUN apk add --update mysql-client openssl tzdata && rm -rf /var/cache/apk/*
+RUN apk add --update mysql-client mariadb-connector-c openssl tzdata && rm -rf /var/cache/apk/*
 # backup target
 VOLUME /backups
 # install the entrypoint
